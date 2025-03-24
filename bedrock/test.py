@@ -18,4 +18,12 @@ def get_llm_json(model_name,llms=llms):
         _similarities.append(similarity_score)
     return llms[_similarities.index(max(_similarities))]
 
-print(type('"{\"inputText\":\"this is where you place your input text\",\"textGenerationConfig\":{\"maxTokenCount\":4096,\"stopSequences\":[],\"temperature\":0,\"topP\":1}}"'))
+
+import fitz
+print(fitz)
+
+_doc_ = fitz.open("data/mckinsey_nm.pdf")
+text = ""
+for page in _doc_:
+    text+=page.get_text()
+print(text)
