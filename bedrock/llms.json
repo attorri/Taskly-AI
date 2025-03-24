@@ -1,0 +1,30 @@
+[
+    {
+        "modelId": "deepseek.r1-v1:0",
+        "contentType": "application/json",
+        "accept": "application/json",
+        "body": {
+            "inferenceConfig": {
+            "max_tokens": 512
+            },
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "this is where you place your input text"
+                }
+            ]
+        }
+    },
+    {
+        "modelId": "amazon.titan-text-lite-v1",
+        "contentType": "application/json",
+        "accept": "application/json",
+        "body": "{\"inputText\":\"this is where you place your input text\",\"textGenerationConfig\":{\"maxTokenCount\":4096,\"stopSequences\":[],\"temperature\":0,\"topP\":1}}"
+    },
+    {
+        "modelId": "amazon.titan-embed-text-v1",
+        "contentType": "application/json",
+        "accept": "*/*",
+        "body": "{\"inputText\":\"this is where you place your input text\"}"
+    }
+]
