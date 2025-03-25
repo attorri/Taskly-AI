@@ -138,7 +138,6 @@ def main():
         docs = data_ingestion(file_path)
         vectorstore_faiss = get_vector_store(docs)
     
-    # Define the query to generate a Jira ticket based on the document text.
     question = "Generate a Jira ticket with a story name, description, and subtasks based on the above document."
     llm = titan_text()
     response = get_response_llm(llm, vectorstore_faiss, question)

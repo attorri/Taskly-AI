@@ -1,0 +1,21 @@
+/Users/christianattorri/Documents/GitHub/Taskly-AI/venv/lib/python3.12/site-packages
+B. Contractor agrees that, if Federal Tax Information (FTI) is introduced into
+
+Contractor’s information systems, work documents, and/or other media by written agreement, any
+FTI as described in 26 U.S.C. § 6103, limited to FTI received from, or created on behalf of, HSD
+by Contractor; Protected Health Information (PHI) as defined in 45 C.F.R. § 160.103, limited to
+PHI received from, or created on behalf of, HSD by Contractor; or Personally Identifiable
+Information (PII) as defined by the National Institute of Standards of Technology, limited to PII
+received from, or created on behalf of, HSD by Contractor pursuant to the Services; all together
+referred to hereafter in Article 10 as Confidential Information, made available to Contractor shall
+be used only for the purpose of carrying out the provisions of this contract.
+Summary Length - 164
+The HSD shall pay to the Contractor in full payment compensation (fixed fees) not
+
+to exceed five million five hundred thousand dollars ($5,500,000) including gross receipts tax, if
+applicable, for services satisfactorily performed as set forth in Exhibit A, SOW.
+Summary Length - 51
+This amount is a
+maximum and not a guarantee that the work assigned to be performed by Contractor under this
+Agreement shall equal the amount stated herein.
+Summary Length - 30
