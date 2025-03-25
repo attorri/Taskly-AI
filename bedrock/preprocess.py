@@ -3,30 +3,62 @@ import nltk
 import os
 import pytextrank
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+from collections import Counter
+from string import punctuation
 
 meeting = open('data/meeting_utk.txt','r').read()
 
-# summarization - may need to be done before the previous two steps 
-# or even independent of them
-# let's try using a hugging face model in this case
+
+
+nlp = spacy.load('en_core_web_lg')
+
+def get_hotwords(doc):
+    obj = {}
+    pos_tag = ['PROPN', 'ADJ', 'NOUN']
+    for token in doc:
+        if token.is_stop or token.text in punctuation:
+            continue
+        if token.pos_ in pos_tag:
+            if token.text not in obj:
+                obj[token.text]=0
+            obj[token.text]+=1
+    return obj
+
+doc = nlp(meeting)
+
+hotwords = get_hotwords(doc)
+hotwords = sorted(hotwords.items(), key=lambda x: x[1], reverse=True)[:10]
+hotwords = [hotwords[i][0] for i in range(len(hotwords))]
+print(hotwords)
+
+def predict_category(hotwords, doc, topics = ['Healthcare','Politics','Consulting', 'Technology']):
+    str_ents = list(doc.ents)
+    str_ents = [ent.text for ent in str_ents]
+    
+    
+
 
 model_name = 't5-large'
 tokenizer = T5Tokenizer.from_pretrained(model_name,legacy=False)
 model = T5ForConditionalGeneration.from_pretrained(model_name)
 
-def summarize(text):
-    prompt = "Summarize the following meeting minutes in detail, capturing key points, decisions and next steps:" + text
+def summarize(text,_title,_hotwords,_type_of_text="meeting"):
+    prompt = f"Summarize the following text, in the context that is from a {_type_of_text}, with the name of such being '{_title}'."
+    prompt += f"Also consider that the following are the top {len(_hotwords)} hot words - {_hotwords}': {text}"
     inputs = tokenizer.encode(prompt, 
                               return_tensors="pt", max_length=1024, 
                               truncation=True)
-    summary_ids = model.generate(inputs, max_new_tokens=150,
+    summary_ids = model.generate(inputs, max_new_tokens=200,
                                  min_length=50,length_penalty=2.0, 
                                  num_beams=6,early_stopping=True
                                  )
     summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
     return summary
 
-summary = summarize(meeting)
+
+_title = "Address by President Obama to the 71st Session of the United Nations General Assembly"
+_type_of_text = "Speech"
+summary = summarize(meeting,_title,hotwords, _type_of_text)
 print(summary)
 
 
@@ -53,18 +85,6 @@ print(summary)
 
 
 
-nlp = spacy.load('en_core_web_lg')
-nlp.add_pipe("textrank")
-
-
-doc = nlp(meeting)
-
-"""
-for sent in doc._.textrank.summary(limit_phrases=5, limit_sentences=3):
-    print(sent)
-    print('Summary Length - {}'.format(len(sent)))
-    1==1
-"""
 
 """
     
