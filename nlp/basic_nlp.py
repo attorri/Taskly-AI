@@ -1,7 +1,7 @@
 """
 Steps:
     1. Segmentation
-    2. Tokenization
+    2. Tokenization -> at least with spacy this' by default
     3. Remove Stop words
     4. Lemmatization -> 'Inflected' = Derived (from lemma); considers context for root
     5. Parts of Speech (POS) Tagging (VERB, NOUN, ADJ, PROPN,...)
