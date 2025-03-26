@@ -1,14 +1,18 @@
 import spacy
 import nltk
+from nltk.tokenize import sent_tokenize
 import os
 import pytextrank
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from collections import Counter
 from string import punctuation
 
-meeting = open('data/meeting_utk.txt','r').read()
 
+nltk.download('punkt_tab')
 
+def sents_nltk():
+    _sents = sent_tokenize('I am so happy to leave IBM. Fuck them. WeWork+CVS+EMT :))')
+    return _sents
 
 nlp = spacy.load('en_core_web_lg')
 
@@ -24,12 +28,6 @@ def get_hotwords(doc):
             obj[token.text]+=1
     return obj
 
-doc = nlp(meeting)
-
-hotwords = get_hotwords(doc)
-hotwords = sorted(hotwords.items(), key=lambda x: x[1], reverse=True)[:10]
-hotwords = [hotwords[i][0] for i in range(len(hotwords))]
-print(hotwords)
 
 def predict_category(hotwords, doc, topics = ['Healthcare','Politics','Consulting', 'Technology']):
     str_ents = list(doc.ents)
@@ -37,6 +35,18 @@ def predict_category(hotwords, doc, topics = ['Healthcare','Politics','Consultin
     
     
 
+
+"""
+    
+
+# stopword removal
+filtered_meeting = [token for token in doc if not token.is_stop]
+
+# lemmatization
+filtered_meeting = [token.lemma_ for token in filtered_meeting if token.lemma_]
+filtered_meeting = ' '.join(filtered_meeting)
+
+"""
 
 model_name = 't5-large'
 tokenizer = T5Tokenizer.from_pretrained(model_name,legacy=False)
@@ -56,44 +66,21 @@ def summarize(text,_title,_hotwords,_type_of_text="meeting"):
     return summary
 
 
-_title = "Address by President Obama to the 71st Session of the United Nations General Assembly"
-_type_of_text = "Speech"
-summary = summarize(meeting,_title,hotwords, _type_of_text)
-print(summary)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
+def main():
+    _sents = sents_nltk()
+    print(_sents) 
     
+    meeting = open('data/meeting_utk.txt','r').read()
+    doc = nlp(meeting)
+    hotwords = get_hotwords(doc)
+    hotwords = sorted(hotwords.items(), key=lambda x: x[1], reverse=True)[:10]
+    hotwords = [hotwords[i][0] for i in range(len(hotwords))]
+    print(hotwords)
 
-# stopword removal
-filtered_meeting = [token for token in doc if not token.is_stop]
-
-# lemmatization
-filtered_meeting = [token.lemma_ for token in filtered_meeting if token.lemma_]
-filtered_meeting = ' '.join(filtered_meeting)
-
-"""
+    _title = "Address by President Obama to the 71st Session of the United Nations General Assembly"
+    _type_of_text = "Speech"
+    summary = summarize(meeting,_title,hotwords, _type_of_text)
+    print(summary)
+    
+if __name__ == '__main__':
+    main()
