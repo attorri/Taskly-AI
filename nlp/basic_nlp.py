@@ -18,30 +18,46 @@ doc = open('data/meeting_utk.txt','r').read()
 doc = nlp(doc)
 
 def _segment(doc):
-    return doc.sents
+    return [sent for sent in doc.sents]
 
 def _tokenize(doc):
     return [token for token in doc]
 
 def _remove_stopwords(doc):
-    return [token for token in doc if not token.is_stop]
+    return [token for token in doc if not token.is_stop and not token.is_punct]
 
 def _lemmatization(doc):
     return [token.lemma_ for token in doc if token.lemma_]
 
 def _pos(doc):
-    return [[token.text,token.pos_] for token in doc]
+    return [(token.text,token.pos_) for token in doc]
 
 def _ner(doc):
-    return [[ent.text, ent.label_] for ent in doc.ents]
+    return [(ent.text, ent.label_) for ent in doc.ents]
+
+def _pipeline(_sents):
+    _words = []
+    _sents_original = _sents[:]
+    for i in range(len(_sents)):
+        _words.append(_tokenize(_sents[i]))
+        _sents[i] = _remove_stopwords(_sents[i])
+        _sents[i] = _lemmatization(_sents[i])
+        # refactoring the sentence, as lemma returns strings.
+        _sents[i] = nlp(' '.join(_sents[i]))
+        _sents[i] = _pos(_sents[i])
+        _sents[i] = list(dict.fromkeys(_sents[i]))
+    for i in range(len(_sents)):
+        _sents[i]+=_ner(_sents_original[i])
+    return _sents
 
 def main(doc):
-    print('Segmentation -\n{}\n\n'.format(_segment(doc)))
-    print('Tokenization -\n{}\n\n'.format(_tokenize(doc)))
-    print('Stopword Removal -\n{}\n\n'.format(_remove_stopwords(doc)))
-    print('Lemmatization - \n{}\n\n'.format(_lemmatization(doc)))
-    print('Parts of Speech (POS) - \n{}\n\n'.format(_pos(doc)))
-    print('Named Entity Recognition (NER) -\n{}\n\n'.format(_ner(doc)))
+    _sents = _segment(doc)
+    fin = _pipeline(_sents)
+    print(fin)
+    return fin
+    
+        
     
 if __name__ == '__main__':
     main(doc)
+    
