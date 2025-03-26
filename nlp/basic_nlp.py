@@ -39,6 +39,7 @@ def main(doc):
     print('Segmentation -\n{}\n\n'.format(_segment(doc)))
     print('Tokenization -\n{}\n\n'.format(_tokenize(doc)))
     print('Stopword Removal -\n{}\n\n'.format(_remove_stopwords(doc)))
+    print('Lemmatization - \n{}\n\n'.format(_lemmatization(doc)))
     print('Parts of Speech (POS) - \n{}\n\n'.format(_pos(doc)))
     print('Named Entity Recognition (NER) -\n{}\n\n'.format(_ner(doc)))
     
